@@ -1,0 +1,7 @@
+{% extends 'clubApp/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="mb-4"><h1>Student Dashboard</h1><p class="lead">Welcome, <b>{{ user.username }}</b></p></div>
+<div class="row g-3 mb-4"><div class="col-md-4"><div class="card p-3"><small>My Clubs</small><h2>{{ memberships|length }}</h2></div></div><div class="col-md-4"><div class="card p-3"><small>Registered Events</small><h2>{{ registrations|length }}</h2></div></div><div class="col-md-4"><div class="card p-3"><small>Email</small><p class="mb-0">{{ user.email|default:'Not provided' }}</p></div></div></div>
+<div class="row"><div class="col-md-6"><h3>My Clubs</h3>{% for m in memberships %}<div class="card p-3 mb-2"><a href="/club/{{ m.club.id }}/"><b>{{ m.club.name }}</b></a><span class="badge bg-success">{{ m.role }}</span></div>{% empty %}<p>You have not joined any clubs.</p>{% endfor %}<a class="btn btn-primary mt-2" href="/clubs/">Explore Clubs</a></div><div class="col-md-6"><h3>My Events</h3>{% for r in registrations %}<div class="card p-3 mb-2"><b>{{ r.event.title }}</b><br><small>{{ r.event.date }} | {{ r.event.venue }}</small></div>{% empty %}<p>No event registrations.</p>{% endfor %}<a class="btn btn-success mt-2" href="/events/">View Events</a></div></div>
+{% endblock %}

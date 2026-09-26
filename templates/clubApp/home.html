@@ -1,0 +1,88 @@
+```django
+{% extends 'clubApp/base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<div class="card p-4 mb-4 text-center">
+    <h1 class="fw-bold">College Club Information System</h1>
+
+    <img src="{% static 'images/vasavi.jpg' %}"
+         class="img-fluid rounded hero-img my-3"
+         alt="College Image">
+
+    <p class="lead">
+        Discover clubs, join student communities, register for events
+        and stay updated with announcements.
+    </p>
+
+    <div>
+        {% if not user.is_authenticated %}
+            <a href="/signup/" class="btn btn-primary me-2">Get Started</a>
+            <a href="/accounts/login/" class="btn btn-outline-primary">Login</a>
+        {% else %}
+            <a href="/dashboard/" class="btn btn-primary">Open Dashboard</a>
+        {% endif %}
+    </div>
+</div>
+
+<h2>Clubs</h2>
+
+<div class="row g-3 mb-4">
+    {% for club in clubs %}
+        <div class="col-md-4">
+            <div class="card h-100 p-3">
+                <h4>{{ club.name }}</h4>
+                <p>{{ club.description|truncatewords:25 }}</p>
+                <a href="/club/{{ club.id }}/"
+                   class="btn btn-outline-primary">
+                    View Details
+                </a>
+            </div>
+        </div>
+    {% empty %}
+        <p>No clubs available.</p>
+    {% endfor %}
+</div>
+
+<div class="row">
+
+    <div class="col-md-6">
+        <h3>Upcoming Events</h3>
+
+        {% for e in events %}
+            <div class="card p-3 mb-2">
+                <b>{{ e.title }}</b>
+                <small>
+                    {{ e.club.name }} |
+                    {{ e.date }}
+                    {% if e.time %}
+                        | {{ e.time }}
+                    {% endif %}
+                </small>
+            </div>
+        {% empty %}
+            <p>No events.</p>
+        {% endfor %}
+    </div>
+
+    <div class="col-md-6">
+        <h3>Announcements</h3>
+
+        {% for a in announcements %}
+            <div class="card p-3 mb-2">
+                <b>{{ a.title }}</b>
+                <p class="mb-0">
+                    {{ a.message|truncatewords:20 }}
+                </p>
+            </div>
+        {% empty %}
+            <p>No announcements.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
